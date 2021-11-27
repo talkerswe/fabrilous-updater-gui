@@ -1,5 +1,6 @@
 package com.hughbone.fabrilousupdater;
 
+import com.github.pozitp.config.ConfigManager;
 import com.hughbone.fabrilousupdater.command.AutoUpdateCommand;
 import com.hughbone.fabrilousupdater.command.IgnoreCommand;
 import com.hughbone.fabrilousupdater.command.ModUpdaterCommand;
