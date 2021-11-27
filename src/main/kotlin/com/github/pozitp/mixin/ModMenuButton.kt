@@ -1,5 +1,6 @@
 package com.github.pozitp.mixin
 
+import com.github.pozitp.Util.Companion.showToast
 import com.terraformersmc.modmenu.gui.ModsScreen
 import com.terraformersmc.modmenu.gui.widget.ModMenuTexturedButtonWidget
 import net.minecraft.client.gui.screen.Screen
@@ -27,12 +28,12 @@ abstract class ModMenuButton protected constructor(title: Text?) : Screen(title)
             ModMenuTexturedButtonWidget(
                 paneWidth / 2 + searchBoxWidth / 2 + 14,
                 22, 20, 20, 0, 0, UPDATE_BUTTON_LOCATION, 32, 64,
-                { println("What") }, LiteralText.EMPTY,
+                { showToast(Text.of("Feature in development!"), Text.of("We are working on it."))}, LiteralText.EMPTY,
                 TooltipSupplier { button: ButtonWidget, matrices: MatrixStack?, mouseX: Int, mouseY: Int ->
                     if (!button.isHovered) {
                         return@TooltipSupplier
                     }
-                    this.renderTooltip(matrices, Text.of("Why"), mouseX, mouseY)
+                    this.renderTooltip(matrices, Text.of("Updates"), mouseX, mouseY)
                 })
         )
     }
