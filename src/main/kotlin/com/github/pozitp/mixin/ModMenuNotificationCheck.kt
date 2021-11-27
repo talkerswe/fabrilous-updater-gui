@@ -1,6 +1,7 @@
 package com.github.pozitp.mixin
 
 import com.hughbone.fabrilousupdater.platform.ModPlatform
+import com.hughbone.fabrilousupdater.platform.ModPlatform.i
 import net.minecraft.client.gui.screen.TitleScreen
 import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.injection.At

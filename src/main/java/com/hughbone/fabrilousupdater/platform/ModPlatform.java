@@ -18,18 +18,21 @@ import java.nio.file.Path;
 
 public class ModPlatform {
     public static boolean isRunning = false;
+    public static int i = 0;
 
     private void showText(PlayerEntity player, Text text) {
         if (player != null) {
             player.sendMessage(text, false);
         }
         else {
-            Util.Companion.showToast(text, Text.of(""));
+            if (i == 0) {
+                return;
+            }
+            Util.Companion.showToast(Text.of("Updates Available!"), text);
         }
     }
 
     public void start(PlayerEntity player, String command) {
-        int i = 0;
         if (isRunning) {
             showText(player, new LiteralText("[Error] Already checking for updates!").setStyle(Style.EMPTY.withColor(Formatting.RED)));
         }
@@ -132,7 +135,7 @@ public class ModPlatform {
                             }
                         }
 
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                 }
             }

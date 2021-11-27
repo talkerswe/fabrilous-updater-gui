@@ -44,7 +44,7 @@ dependencies {
 	}
 
     modApi("com.terraformersmc:modmenu:2.0.12")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0'
 
 }
 
@@ -81,11 +81,11 @@ jar {
 }
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "16"
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "16"
     }
 }
