@@ -17,7 +17,7 @@
   },
 
   "license": "MIT",
-  "icon": "assets/fabrilousupdater/icon.png",
+  "icon": "assets/fabrilousupdatergui/icon.png",
 
   "environment": "*",
   "entrypoints": {
