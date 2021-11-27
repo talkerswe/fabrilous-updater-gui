@@ -1,5 +1,5 @@
-# Fabrilous Updater
-Minecraft server-side (works in singleplayer!) mod used to check for updates to your Fabric mods.
+# Fabrilous Updater GUI
+Minecraft client-side mod used to check for updates to your Fabric mods.
 
 Note: Only works with mods uploaded to CurseForge or Modrinth.
 
@@ -11,4 +11,6 @@ Note: Only works with mods uploaded to CurseForge or Modrinth.
 
 
 ## How it works:
-Using the magic of file hashes, Fabrilous Updater searches through Curseforge and Modrinth to find the latest compatible version.
+Using the magic of file hashes, Fabrilous Updater GUI searches through Curseforge and Modrinth to find the latest compatible version.
+
+### Enhanced version of [Fabrilous Updater](https://github.com/HughBone/fabrilous-updater) (fork)
