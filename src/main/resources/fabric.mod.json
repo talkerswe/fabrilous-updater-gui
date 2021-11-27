@@ -1,17 +1,19 @@
 {
   "schemaVersion": 1,
-  "id": "fabrilousupdater",
+  "id": "fabrilousupdatergui",
   "version": "${version}",
 
-  "name": "FabrilousUpdater",
+  "name": "FabrilousUpdaterGUI",
   "description": "Easy mod updater for fabric.",
   "authors": [
-    "HughBone"
+    "HughBone",
+    "TheEnderOfficial",
+    "pozitp"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/fabrilous-updater",
-    "issues": "https://github.com/HughBone/fabrilous-updater/issues",
-    "sources": "https://github.com/HughBone/fabrilous-updater"
+    "homepage": "https://modrinth.com/mod/fabrilous-updater-gui",
+    "issues": "https://github.com/pozitp/fabrilous-updater-gui/issues",
+    "sources": "https://github.com/pozitp/fabrilous-updater-gui"
   },
 
   "license": "MIT",
