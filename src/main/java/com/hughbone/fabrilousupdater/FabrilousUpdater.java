@@ -36,6 +36,5 @@ public class FabrilousUpdater implements ModInitializer {
             });
         } catch (Exception ignored) {}
 
-
     }
 }

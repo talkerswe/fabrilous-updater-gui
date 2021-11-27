@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "ModMenuNotificationCheck"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -5,12 +5,19 @@ import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.injection.At
 import org.spongepowered.asm.mixin.injection.Inject
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
-import java.util.*
 
 @Mixin(TitleScreen::class)
 class ModMenuNotificationCheck {
-    @Inject(at = [At("HEAD")], method = ["init()V"])
+    private companion object {
+        private var showed: Boolean = false;
+    }
+
+    @Inject(at = [At("RETURN")], method = ["render"])
     fun init(info: CallbackInfo) {
-        println(123)
+        if (!showed) {
+            println("Hello, world!")
+            // TODO: Check updates
+        }
+        showed = true;
     }
 }

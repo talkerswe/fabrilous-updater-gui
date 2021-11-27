@@ -13,7 +13,7 @@ public class CurrentMod {
     public String websiteUrl;
     public String fileName;
 
-    CurrentMod(String hashOrResult, String platform) {
+    public CurrentMod(String hashOrResult, String platform) {
         try {
             if (platform.equals("curseforge")) {
                 JsonParser jp = new JsonParser();
