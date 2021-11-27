@@ -27,6 +27,7 @@
     ]
   },
   "mixins": [
+    "fabrilousupdater.mixins.json"
   ],
 
   "depends": {
