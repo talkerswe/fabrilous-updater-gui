@@ -4,6 +4,7 @@ import com.hughbone.fabrilousupdater.command.AutoUpdateCommand;
 import com.hughbone.fabrilousupdater.command.IgnoreCommand;
 import com.hughbone.fabrilousupdater.command.ModUpdaterCommand;
 import com.hughbone.fabrilousupdater.util.FabUtil;
+import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -33,5 +34,7 @@ public class FabrilousUpdater implements ModInitializer {
                 }
             });
         } catch (Exception ignored) {}
+
+
     }
 }
