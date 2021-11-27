@@ -1,21 +1,19 @@
 package com.github.pozitp.mixin
 
-import org.spongepowered.asm.mixin.Mixin
 import com.terraformersmc.modmenu.gui.ModsScreen
-import org.spongepowered.asm.mixin.Shadow
-import org.spongepowered.asm.mixin.injection.Inject
-import org.spongepowered.asm.mixin.injection.At
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import com.terraformersmc.modmenu.gui.widget.ModMenuTexturedButtonWidget
-import com.github.pozitp.mixin.ModMenuButton
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ButtonWidget
-import net.minecraft.client.gui.widget.ButtonWidget.PressAction
-import net.minecraft.text.LiteralText
 import net.minecraft.client.gui.widget.ButtonWidget.TooltipSupplier
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import org.spongepowered.asm.mixin.Mixin
+import org.spongepowered.asm.mixin.Shadow
+import org.spongepowered.asm.mixin.injection.At
+import org.spongepowered.asm.mixin.injection.Inject
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 
 @Mixin(ModsScreen::class)
 abstract class ModMenuButton protected constructor(title: Text?) : Screen(title) {
@@ -29,7 +27,7 @@ abstract class ModMenuButton protected constructor(title: Text?) : Screen(title)
             ModMenuTexturedButtonWidget(
                 paneWidth / 2 + searchBoxWidth / 2 + 14,
                 22, 20, 20, 0, 0, UPDATE_BUTTON_LOCATION, 32, 64,
-                { button: ButtonWidget? -> println("What") }, LiteralText.EMPTY, label@
+                { println("What") }, LiteralText.EMPTY,
                 TooltipSupplier { button: ButtonWidget, matrices: MatrixStack?, mouseX: Int, mouseY: Int ->
                     if (!button.isHovered) {
                         return@TooltipSupplier

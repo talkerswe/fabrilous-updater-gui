@@ -49,6 +49,7 @@ public class CurrentMod {
             }
 
             // Format Mod Name
+            assert modName != null;
             modName = modName.replace("(fabric)", "");
             modName = modName.replace("(Fabric)", "");
             // Remove spaces at the end of the string

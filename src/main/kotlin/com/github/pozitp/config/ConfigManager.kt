@@ -20,7 +20,7 @@ class ConfigManager {
         return java.lang.Boolean.parseBoolean(prop.getProperty(key))
     }
 
-    fun getStringProperty(key: String?): String? {
+/*    fun getStringProperty(key: String?): String? {
         if (!loaded) load()
         return prop.getProperty(key)
     }
@@ -33,10 +33,10 @@ class ConfigManager {
     fun getDoubleProperty(key: String?): Double {
         if (!loaded) load()
         return prop.getProperty(key).toDouble()
-    }
+    }*/
 
     private val file: File = File("./config/fabrilousupdater/config.properties")
-    public fun setValue(key: String, value: String) {
+    fun setValue(key: String, value: String) {
         prop.setProperty(key, value)
         val writer = FileOutputStream(file)
         file.createNewFile()
