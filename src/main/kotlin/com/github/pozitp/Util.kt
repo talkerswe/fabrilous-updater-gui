@@ -7,7 +7,10 @@ import java.util.*
 
 class Util {
     companion object {
-        var shownUpdateNotification:Boolean = false
+        @JvmField
+        var shownUpdateNotification: Boolean = false
+
+        @JvmStatic
         fun showToast(line1: Text, line2: Text) {
             Objects.requireNonNull(MinecraftClient.getInstance()).toastManager.add(
                 SystemToast(
