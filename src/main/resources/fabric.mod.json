@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "fabrilousupdatergui",
   "version": "${version}",
-
   "name": "Fabrilous Updater GUI",
   "description": "Easy mod updater for fabric.",
   "authors": [
@@ -15,10 +14,8 @@
     "issues": "https://github.com/pozitp/fabrilous-updater-gui/issues",
     "sources": "https://github.com/pozitp/fabrilous-updater-gui"
   },
-
   "license": "MIT",
   "icon": "assets/fabrilousupdatergui/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -29,15 +26,13 @@
     ]
   },
   "mixins": [
-    "fabrilousupdater.mixins.json"
+    "fabrilousupdatergui.mixins.json"
   ],
-
   "depends": {
-    "fabricloader": ">=0.11.7",
-    "fabric": "*",
-    "minecraft": "1.17.x"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "fabricloader": ">=0.12",
+    "modmenu": "~${modmenu_version}",
+    "fabric-language-kotlin": ">=${fabric_kotlin_version}",
+    "minecraft": "1.17.x",
+    "java": ">=16"
   }
 }

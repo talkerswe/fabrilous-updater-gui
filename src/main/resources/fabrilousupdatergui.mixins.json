@@ -7,7 +7,7 @@
   ],
   "client": [
     "ModMenuNotificationCheck",
-    "ModMenuButton"
+      "ModMenuButton"
   ],
   "injectors": {
     "defaultRequire": 1
