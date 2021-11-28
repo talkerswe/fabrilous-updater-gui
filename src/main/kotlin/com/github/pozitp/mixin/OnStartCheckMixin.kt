@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 
 @Mixin(TitleScreen::class)
 open class OnStartCheckMixin protected constructor(title: Text?) : Screen(title) {
-    @Inject(at = [At("TAIL")], method = ["onRender"])
-    fun onRender(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float, ci: CallbackInfo) {
+    @Inject(at = [At("TAIL")], method = ["render()V"])
+    fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float, ci: CallbackInfo) {
         if (shownUpdateNotification) {
             return
         }
