@@ -30,8 +30,8 @@
   ],
   "depends": {
     "fabricloader": ">=0.12",
-    "modmenu": ">=2.0.12",
-    "fabric-language-kotlin": ">=1.7.0",
+    "modmenu": ">=2.0.14",
+    "fabric-language-kotlin": ">=1.7.0+kotlin.1.6.0",
     "minecraft": "1.17.x",
     "java": ">=16"
   }

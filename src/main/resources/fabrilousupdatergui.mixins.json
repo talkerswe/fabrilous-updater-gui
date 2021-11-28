@@ -6,8 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "ModMenuNotificationCheck",
-      "ModMenuButton"
+    "ModMenuButton",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
