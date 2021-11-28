@@ -9,8 +9,8 @@ import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 public class ModUpdaterCommand {
@@ -27,7 +27,7 @@ public class ModUpdaterCommand {
                 .then(LiteralArgumentBuilder.<FabricClientCommandSource>literal("update").executes(ctx -> {
                             PlayerEntity player = ClientPlayerHack.getPlayer(ctx);
                             if (FabUtil.modPresentOnServer && player.hasPermissionLevel(4)) {
-                                player.sendMessage(new LiteralText("Note: Use '/fabdateserver update' for server mods.").setStyle(Style.EMPTY.withColor(Formatting.BLUE)), false);
+                                player.sendMessage(new TranslatableText("update.message.note.use").setStyle(Style.EMPTY.withColor(Formatting.BLUE)), false);
                             }
                             new StartThread(player).start();
                             return 1;
@@ -54,12 +54,12 @@ public class ModUpdaterCommand {
 
         public void run() {
             if (ModPlatform.isRunning) {
-                player.sendMessage(new LiteralText("[Error] Already checking for updates!").setStyle(Style.EMPTY.withColor(Formatting.RED)), false);
+                player.sendMessage(new TranslatableText("update.message.error.already").setStyle(Style.EMPTY.withColor(Formatting.RED)), false);
             }
             else {
-                player.sendMessage(new LiteralText("[FabrilousUpdater] Searching for updates. This may take a while..."), false);
+                player.sendMessage(new TranslatableText("update.message.search"), false);
                 new ModPlatform().start(player, "update");
-                player.sendMessage(new LiteralText("[FabrilousUpdater] Finished!"), false);
+                player.sendMessage(new TranslatableText("update.message.finish"), false);
             }
         }
     }

@@ -3,7 +3,7 @@
   "id": "fabrilousupdatergui",
   "version": "${version}",
 
-  "name": "FabrilousUpdaterGUI",
+  "name": "Fabrilous Updater GUI",
   "description": "Easy mod updater for fabric.",
   "authors": [
     "HughBone",

@@ -1,5 +1,16 @@
 {
-  "option.fabrilousupdater.autoCheck": "Auto Check Updates?",
+  "option.fabrilousupdater.autoCheck": "Auto Check Updates",
   "category.fabrilousupdater.general": "General",
-  "title.fabrilousupdater.config": "Fabrilous Updater Config (by Pozitp and Ender)"
+  "title.fabrilousupdater.config": "Fabrilous Updater Config",
+  "update.notification.fabrilousupdater.title": "Updates Available!",
+  "update.notification.fabrilousupdater.description": "%d mods can be updated",
+  "atdevelopment.title": "Feature in development!",
+  "atdevelopment.description": "We are working on it",
+  "gui.button.updates": "Updates",
+  "update.message.note.use": "Use '/fabdateserver update' for check updatable mods.",
+  "update.message.search": "[FabrilousUpdaterGUI] Searching for updates. This may take a while...",
+  "update.message.checking": "Checking %d..",
+  "update.message.error.already": "[Error] Already checking for updates!",
+  "update.message.error.notfound": "[Error] %d not found in Modrinth or CurseForge",
+  "update.message.finish": "[FabrilousUpdaterGUI] Finished!"
 }

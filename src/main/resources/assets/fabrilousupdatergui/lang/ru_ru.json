@@ -1,0 +1,16 @@
+{
+  "option.fabrilousupdater.autoCheck": "Проверка уведомлений на старте",
+  "category.fabrilousupdater.general": "Основные",
+  "title.fabrilousupdater.config": "Настройки Fabrilous Updater",
+  "update.notification.fabrilousupdater.title": "Доступны обновления!",
+  "update.notification.fabrilousupdater.description": "Можно обновить модов: %d",
+  "atdevelopment.title": "Функция в разработке!",
+  "atdevelopment.description": "Мы работаем над этим",
+  "gui.button.updates": "Обновления",
+  "update.message.note.use": "Используйте '/fabdateserver update' чтобы проверить обновления.",
+  "update.message.search": "[FabrilousUpdaterGUI] Поиск обновлений. Это можеть занять некоторое время...",
+  "update.message.checking": "Проверка %d..",
+  "update.message.error.already": "[Error] Обновления уже проверяются!",
+  "update.message.error.notfound": "[Error] %d не найден на Modrinth или CurseForge",
+  "update.message.finish": "[FabrilousUpdaterGUI] Готово!"
+}

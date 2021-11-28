@@ -9,6 +9,7 @@ import net.minecraft.client.gui.widget.ButtonWidget.TooltipSupplier
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
+import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.Shadow
@@ -28,12 +29,12 @@ abstract class ModMenuButton protected constructor(title: Text?) : Screen(title)
             ModMenuTexturedButtonWidget(
                 paneWidth / 2 + searchBoxWidth / 2 + 14,
                 22, 20, 20, 0, 0, UPDATE_BUTTON_LOCATION, 32, 64,
-                { showToast(Text.of("Feature in development!"), Text.of("We are working on it."))}, LiteralText.EMPTY,
+                { showToast(TranslatableText("atdevelopment.title"), TranslatableText("atdevelopment.description"))}, LiteralText.EMPTY,
                 TooltipSupplier { button: ButtonWidget, matrices: MatrixStack?, mouseX: Int, mouseY: Int ->
                     if (!button.isHovered) {
                         return@TooltipSupplier
                     }
-                    this.renderTooltip(matrices, Text.of("Updates"), mouseX, mouseY)
+                    this.renderTooltip(matrices, TranslatableText("gui.button.updates"), mouseX, mouseY)
                 })
         )
     }
