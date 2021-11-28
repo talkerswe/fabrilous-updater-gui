@@ -28,13 +28,14 @@ public class ModPlatform {
             if (i == 0) {
                 return;
             }
-            Util.Companion.showToast(Text.of("Updates Available!"), text);
+            Util.Companion.showToast(new TranslatableText("update.notification.fabrilousupdater.title"), text);
+            i = 0;
         }
     }
 
     public void start(PlayerEntity player, String command) {
         if (isRunning) {
-            showText(player, new LiteralText("[Error] Already checking for updates!").setStyle(Style.EMPTY.withColor(Formatting.RED)));
+            showText(player, new TranslatableText("update.message.error.already").setStyle(Style.EMPTY.withColor(Formatting.RED)));
         }
         isRunning = true;
 
@@ -55,10 +56,10 @@ public class ModPlatform {
                 } catch (IOException ignored) {}
 
                 if (player != null)
-                    showText(player, new LiteralText("Checking " + fileName + ".."));
+                    showText(player, new TranslatableText("update.message.checking", fileName));
 
                 // Check for updates
-                if (fileName.contains(".jar")) {
+                if (fileName.endsWith(".jar")) {
                     ReleaseFile newestFile = null;
                     try {
                         // Check if Modrinth mod
@@ -88,7 +89,7 @@ public class ModPlatform {
                         }
 
                         if (currentMod.modName == null) {
-                            showText(player, new LiteralText("[Error] '" + fileName + "' not found in Modrinth or CurseForge").setStyle(Style.EMPTY.withColor(Formatting.RED)));
+                            showText(player, new TranslatableText("update.message.error.notfound", fileName).setStyle(Style.EMPTY.withColor(Formatting.RED)));
                         }
                         // Send update message
                         else if (newestFile != null) {
@@ -144,9 +145,9 @@ public class ModPlatform {
         }
 
         if (player != null)
-            showText(player, new LiteralText("Finished!"));
+            showText(player, new TranslatableText("update.message.finish"));
         else
-            showText(null, Text.of(i + " mods can be updated"));
+            showText(null, new TranslatableText("update.notification.fabrilousupdater.description", i));
         isRunning = false;
     }
 
