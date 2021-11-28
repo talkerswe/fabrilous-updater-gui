@@ -7,7 +7,7 @@
   ],
   "client": [
     "ModMenuButton",
-    "TitleScreenMixin"
+    "OnStartCheckMixin"
   ],
   "injectors": {
     "defaultRequire": 1
