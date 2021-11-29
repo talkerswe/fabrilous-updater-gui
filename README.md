@@ -1,5 +1,12 @@
 # Fabrilous Updater GUI
-Minecraft client-side mod used to check for updates to your Fabric mods.
+
+[![CircleCI](https://circleci.com/gh/RELOADEDev/fabrilous-updater-gui/tree/main.svg?style=shield)](https://circleci.com/gh/RELOADEDev/fabrilous-updater-gui/tree/main)
+![build](https://github.com/RELOADEDev/fabrilous-updater-gui/actions/workflows/build.yml/badge.svg)
+![License](https://img.shields.io/github/license/RELOADEDev/fabrilous-updater-gui.svg)
+![Release](https://img.shields.io/github/release/RELOADEDev/fabrilous-updater-gui.svg)
+![Downloads](https://img.shields.io/github/downloads/RELOADEDev/fabrilous-updater-gui/total.svg)
+
+Minecraft client-side (server side will be soon) mod used to check for updates to your Fabric mods.
 
 Note: Only works with mods uploaded to CurseForge or Modrinth.
 
@@ -7,7 +14,7 @@ Note: Only works with mods uploaded to CurseForge or Modrinth.
 ## Commands
 * "/fabdate update" - Shows a list of mods needing updates with a clickable download link.
 * "/fabdate ignore"  -  Add, list, or remove mods from an ignore list to prevent update checks.
-* "/fabdate autoupdate" - Automatically removes old mods and downloads new mods.
+* "/fabdate autoupdate" - Automatically removes old mods and downloads new mods. (Deprecated)
 
 
 ## How it works:
