@@ -1,6 +1,7 @@
 # Fabrilous Updater GUI
 
 [![CircleCI](https://circleci.com/gh/RELOADEDev/fabrilous-updater-gui/tree/main.svg?style=shield)](https://circleci.com/gh/RELOADEDev/fabrilous-updater-gui/tree/main)
+![build](https://github.com/RELOADEDev/fabrilous-updater-gui/actions/workflows/build.yml/badge.svg)
 ![License](https://img.shields.io/github/license/RELOADEDev/fabrilous-updater-gui.svg)
 ![Release](https://img.shields.io/github/release/RELOADEDev/fabrilous-updater-gui.svg)
 ![Downloads](https://img.shields.io/github/downloads/RELOADEDev/fabrilous-updater-gui/total.svg)
