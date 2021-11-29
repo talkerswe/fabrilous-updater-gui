@@ -1,0 +1,127 @@
+public final class com/github/pozitp/Util {
+	public static final field Companion Lcom/github/pozitp/Util$Companion;
+	public static field shownUpdateNotification Z
+	public fun <init> ()V
+	public static final fun showToast (Lnet/minecraft/text/Text;Lnet/minecraft/text/Text;)V
+}
+
+public final class com/github/pozitp/Util$Companion {
+	public final fun showToast (Lnet/minecraft/text/Text;Lnet/minecraft/text/Text;)V
+}
+
+public final class com/github/pozitp/config/ConfigManager {
+	public static final field Companion Lcom/github/pozitp/config/ConfigManager$Companion;
+	public fun <init> ()V
+	public final fun getBooleanProperty (Ljava/lang/String;)Z
+	public final fun setValue (Ljava/lang/String;Ljava/lang/String;)V
+}
+
+public final class com/github/pozitp/config/ConfigManager$Companion {
+	public final fun getINSTANCE ()Lcom/github/pozitp/config/ConfigManager;
+}
+
+public final class com/github/pozitp/config/ModMenuConfig : com/terraformersmc/modmenu/api/ModMenuApi {
+	public fun <init> ()V
+	public fun getModConfigScreenFactory ()Lcom/terraformersmc/modmenu/api/ConfigScreenFactory;
+}
+
+public abstract class com/github/pozitp/mixin/ModsCheckMixin : net/minecraft/client/gui/screen/Screen {
+	protected fun <init> (Lnet/minecraft/text/Text;)V
+	public fun onInit (Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V
+}
+
+public class com/github/pozitp/mixin/TitleCheckMixin : net/minecraft/client/gui/screen/Screen {
+	protected fun <init> (Lnet/minecraft/text/Text;)V
+	public fun onRender (Lnet/minecraft/client/util/math/MatrixStack;IIFLorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V
+}
+
+public class com/hughbone/fabrilousupdater/FabrilousUpdater : net/fabricmc/api/ModInitializer {
+	public fun <init> ()V
+	public fun onInitialize ()V
+}
+
+public final class com/hughbone/fabrilousupdater/command/AutoUpdateCommand {
+	public fun <init> ()V
+	public final fun register (Ljava/lang/String;)V
+}
+
+public final class com/hughbone/fabrilousupdater/command/ClientPlayerHack {
+	public static final field INSTANCE Lcom/hughbone/fabrilousupdater/command/ClientPlayerHack;
+	public static final fun getPlayer (Lcom/mojang/brigadier/context/CommandContext;)Lnet/minecraft/entity/player/PlayerEntity;
+}
+
+public final class com/hughbone/fabrilousupdater/command/IgnoreCommand {
+	public fun <init> ()V
+	public final fun register (Ljava/lang/String;)V
+	public final fun removeDeletedMods ()V
+}
+
+public final class com/hughbone/fabrilousupdater/command/ModUpdaterCommand {
+	public fun <init> ()V
+	public final fun register (Ljava/lang/String;)V
+}
+
+public final class com/hughbone/fabrilousupdater/command/suggestion/IgnoreList {
+	public static final field INSTANCE Lcom/hughbone/fabrilousupdater/command/suggestion/IgnoreList;
+	public final fun getSuggestions (Lcom/mojang/brigadier/suggestion/SuggestionsBuilder;)Ljava/util/concurrent/CompletableFuture;
+}
+
+public final class com/hughbone/fabrilousupdater/command/suggestion/ModList {
+	public static final field INSTANCE Lcom/hughbone/fabrilousupdater/command/suggestion/ModList;
+	public final fun getSuggestions (Lcom/mojang/brigadier/suggestion/SuggestionsBuilder;)Ljava/util/concurrent/CompletableFuture;
+}
+
+public final class com/hughbone/fabrilousupdater/platform/CurrentMod {
+	public field fileDate Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun getFileName ()Ljava/lang/String;
+	public final fun getModName ()Ljava/lang/String;
+	public final fun getProjectID ()Ljava/lang/String;
+	public final fun getWebsiteUrl ()Ljava/lang/String;
+	public final fun setFileName (Ljava/lang/String;)V
+	public final fun setModName (Ljava/lang/String;)V
+	public final fun setProjectID (Ljava/lang/String;)V
+	public final fun setWebsiteUrl (Ljava/lang/String;)V
+}
+
+public final class com/hughbone/fabrilousupdater/platform/ModPlatform {
+	public static final field Companion Lcom/hughbone/fabrilousupdater/platform/ModPlatform$Companion;
+	public static field isRunning Z
+	public fun <init> ()V
+	public final fun start (Lnet/minecraft/entity/player/PlayerEntity;Ljava/lang/String;)V
+}
+
+public final class com/hughbone/fabrilousupdater/platform/ModPlatform$Companion {
+	public final fun getI ()I
+	public final fun setI (I)V
+}
+
+public final class com/hughbone/fabrilousupdater/platform/ReleaseFile {
+	public field fileDate Ljava/lang/String;
+	public field isFabric Z
+	public fun <init> (Lcom/google/gson/JsonObject;Ljava/lang/String;)V
+	public final fun getDownloadUrl ()Ljava/lang/String;
+	public final fun getFileName ()Ljava/lang/String;
+	public final fun isCompatible (Ljava/lang/String;)Z
+	public final fun setDownloadUrl (Ljava/lang/String;)V
+	public final fun setFileName (Ljava/lang/String;)V
+}
+
+public final class com/hughbone/fabrilousupdater/util/FabUtil {
+	public static final field INSTANCE Lcom/hughbone/fabrilousupdater/util/FabUtil;
+	public static field modPresentOnServer Z
+	public static field modsDir Ljava/nio/file/Path;
+	public static field updaterIgnorePath Ljava/nio/file/Path;
+	public static final fun createConfigFiles ()V
+	public final fun getJsonArray (Ljava/lang/String;)Lcom/google/gson/JsonArray;
+	public final fun getJsonObject (Ljava/lang/String;)Lcom/google/gson/JsonObject;
+	public final fun getNewUpdate (Lcom/google/gson/JsonArray;Lcom/hughbone/fabrilousupdater/platform/CurrentMod;Ljava/lang/String;)Lcom/hughbone/fabrilousupdater/platform/ReleaseFile;
+	public final fun sendPost (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class com/hughbone/fabrilousupdater/util/Hash {
+	public static final field INSTANCE Lcom/hughbone/fabrilousupdater/util/Hash;
+	public final fun getMurmurHash (Ljava/nio/file/Path;)Ljava/lang/String;
+	public final fun getSHA1 (Ljava/nio/file/Path;)Ljava/lang/String;
+}
+
