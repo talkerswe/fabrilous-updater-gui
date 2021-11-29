@@ -14,7 +14,7 @@ Note: Only works with mods uploaded to CurseForge or Modrinth.
 ## Commands
 * "/fabdate update" - Shows a list of mods needing updates with a clickable download link.
 * "/fabdate ignore"  -  Add, list, or remove mods from an ignore list to prevent update checks.
-* "/fabdate autoupdate" - Automatically removes old mods and downloads new mods.
+* "/fabdate autoupdate" - Automatically removes old mods and downloads new mods. (Deprecated)
 
 
 ## How it works:
