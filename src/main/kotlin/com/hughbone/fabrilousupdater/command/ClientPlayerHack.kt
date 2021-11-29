@@ -1,11 +1,12 @@
-package com.hughbone.fabrilousupdater.command;
+package com.hughbone.fabrilousupdater.command
 
-import com.mojang.brigadier.context.CommandContext;
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
-import net.minecraft.entity.player.PlayerEntity;
+import com.mojang.brigadier.context.CommandContext
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
+import net.minecraft.entity.player.PlayerEntity
 
-public class ClientPlayerHack {
-    public static PlayerEntity getPlayer(CommandContext<FabricClientCommandSource> ctx) {
-        return ctx.getSource().getPlayer();
+object ClientPlayerHack {
+    @JvmStatic
+    fun getPlayer(ctx: CommandContext<FabricClientCommandSource>): PlayerEntity {
+        return ctx.source.player
     }
 }

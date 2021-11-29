@@ -1,63 +1,56 @@
-package com.hughbone.fabrilousupdater.platform;
+package com.hughbone.fabrilousupdater.platform
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.hughbone.fabrilousupdater.util.FabUtil;
+import com.google.gson.JsonParser
+import com.hughbone.fabrilousupdater.util.FabUtil
+import java.lang.Exception
 
-public class CurrentMod {
-    public String projectID;
-    public String fileDate;
-    public String modName;
-    public String websiteUrl;
-    public String fileName;
+class CurrentMod(hashOrResult: String, platform: String) {
+    var projectID: String? = null
+    @JvmField
+    var fileDate: String? = null
+    var modName: String? = null
+    var websiteUrl: String? = null
+    var fileName: String? = null
 
-    public CurrentMod(String hashOrResult, String platform) {
+    init {
         try {
-            if (platform.equals("curseforge")) {
-                JsonParser jp = new JsonParser();
-                JsonObject json = jp.parse(hashOrResult).getAsJsonObject();
-
-                projectID = json.get("exactMatches").getAsJsonArray().get(0).getAsJsonObject().get("id").getAsString();
-                fileDate = json.get("exactMatches").getAsJsonArray().get(0).getAsJsonObject().get("file").getAsJsonObject().get("fileDate").getAsString();
-                fileName = json.get("exactMatches").getAsJsonArray().get(0).getAsJsonObject().get("file").getAsJsonObject().get("fileName").getAsString();
-
-                json = FabUtil.getJsonObject("https://addons-ecs.forgesvc.net/api/v2/addon/" + projectID);
-                modName = json.get("name").getAsString();
-                websiteUrl = json.get("websiteUrl").getAsString() + "/files";
-            }
-
-            else if (platform.equals("modrinth")) {
-                JsonObject json = FabUtil.getJsonObject("https://api.modrinth.com/api/v1/version_file/" + hashOrResult + "?algorithm=sha1");
-                projectID = json.get("mod_id").getAsString();
-                fileDate = json.get("date_published").getAsString();
-                final JsonArray filesArray =  json.getAsJsonArray("files");
+            if (platform == "curseforge") {
+                val jp = JsonParser()
+                var json = jp.parse(hashOrResult).asJsonObject
+                projectID = json["exactMatches"].asJsonArray[0].asJsonObject["id"].asString
+                fileDate = json["exactMatches"].asJsonArray[0].asJsonObject["file"].asJsonObject["fileDate"].asString
+                fileName = json["exactMatches"].asJsonArray[0].asJsonObject["file"].asJsonObject["fileName"].asString
+                json = FabUtil.getJsonObject("https://addons-ecs.forgesvc.net/api/v2/addon/$projectID")
+                modName = json["name"].asString
+                websiteUrl = json["websiteUrl"].asString + "/files"
+            } else if (platform == "modrinth") {
+                var json =
+                    FabUtil.getJsonObject("https://api.modrinth.com/api/v1/version_file/$hashOrResult?algorithm=sha1")
+                projectID = json["mod_id"].asString
+                fileDate = json["date_published"].asString
+                val filesArray = json.getAsJsonArray("files")
 
                 // Get filename
-                for (JsonElement j : filesArray) {
-                    String tempFile = j.getAsJsonObject().get("filename").getAsString();
+                for (j in filesArray) {
+                    val tempFile = j.asJsonObject["filename"].asString
                     if (!tempFile.contains("-sources") && !tempFile.contains("-dev")) {  // If multiple files uploaded, get rid of imposter ඞ ones
-                        this.fileName = j.getAsJsonObject().get("filename").getAsString();
-                        break;
+                        fileName = j.asJsonObject["filename"].asString
+                        break
                     }
                 }
-
-                json = FabUtil.getJsonObject("https://api.modrinth.com/api/v1/mod/" + projectID);
-                modName = json.get("title").getAsString();
-                websiteUrl = "https://www.modrinth.com/mod/" + json.get("slug").getAsString() + "/versions";
+                json = FabUtil.getJsonObject("https://api.modrinth.com/api/v1/mod/$projectID")
+                modName = json["title"].asString
+                websiteUrl = "https://www.modrinth.com/mod/" + json["slug"].asString + "/versions"
             }
-
-            // Format Mod Name
-            assert modName != null;
-            modName = modName.replace("(fabric)", "");
-            modName = modName.replace("(Fabric)", "");
+            assert(modName != null)
+            modName = modName!!.replace("(fabric)", "")
+            modName = modName!!.replace("(Fabric)", "")
             // Remove spaces at the end of the string
-            while (Character.toString(modName.charAt(modName.length()-1)).equals(" ")) {
-                modName = modName.substring(0, modName.length() - 1);
+            while (modName!![modName!!.length - 1].toString() == " ") {
+                modName = modName!!.substring(0, modName!!.length - 1)
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

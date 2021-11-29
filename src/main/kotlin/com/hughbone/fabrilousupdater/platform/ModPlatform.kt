@@ -1,159 +1,152 @@
-package com.hughbone.fabrilousupdater.platform;
+package com.hughbone.fabrilousupdater.platform
 
-import com.github.pozitp.Util;
-import com.google.gson.JsonArray;
-import com.hughbone.fabrilousupdater.util.FabUtil;
-import com.hughbone.fabrilousupdater.util.Hash;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.*;
-import net.minecraft.util.Formatting;
+import com.github.pozitp.Util.Companion.showToast
+import com.hughbone.fabrilousupdater.util.FabUtil
+import com.hughbone.fabrilousupdater.util.Hash
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.text.Style
+import net.minecraft.text.Text
+import net.minecraft.text.TranslatableText
+import net.minecraft.util.Formatting
+import java.io.IOException
+import java.lang.reflect.Array
+import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Path
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-public class ModPlatform {
-    public static boolean isRunning = false;
-    public static int i = 0;
-
-    private void showText(PlayerEntity player, Text text) {
+// TODO: IDK, but message sent twice, updates not finds => no startup notification
+class ModPlatform {
+    private fun showText(player: PlayerEntity?, text: Text) {
         if (player != null) {
-            player.sendMessage(text, false);
-        }
-        else {
+            player.sendMessage(text, false)
+        } else {
             if (i == 0) {
-                return;
+                return
             }
-            Util.Companion.showToast(new TranslatableText("update.notification.fabrilousupdater.title"), text);
-            i = 0;
+            showToast(TranslatableText("update.notification.fabrilousupdater.title"), text)
+            i = 0
         }
     }
 
-    public void start(PlayerEntity player, String command) {
+    fun start(player: PlayerEntity?, command: String) {
         if (isRunning) {
-            showText(player, new TranslatableText("update.message.error.already").setStyle(Style.EMPTY.withColor(Formatting.RED)));
+            showText(
+                player,
+                TranslatableText("update.message.error.already").setStyle(Style.EMPTY.withColor(Formatting.RED))
+            )
         }
-        isRunning = true;
+        isRunning = true
 
         // Search through all mods
         try {
-            outer:
-            for (Path modFile : Files.list(FabUtil.modsDir).toList()) {
+            outer@ for (modFile in Files.list(FabUtil.modsDir).toList()) {
                 // Skip mod if in ignore list
-                String fileName = modFile.getFileName().toString();
+                val fileName = modFile.fileName.toString()
                 try {
-                    String line;
-                    BufferedReader file = Files.newBufferedReader(FabUtil.updaterIgnorePath);
-                    while ((line = file.readLine()) != null) {
-                        if (fileName.equals(line)) {
-                            continue outer;
+                    var line: String?
+                    val file = Files.newBufferedReader(FabUtil.updaterIgnorePath)
+                    while (file.readLine().also { line = it } != null) {
+                        if (fileName == line) {
+                            continue@outer
                         }
                     }
-                } catch (IOException ignored) {}
-
-                if (player != null)
-                    showText(player, new TranslatableText("update.message.checking", fileName));
+                } catch (ignored: IOException) {
+                }
+                if (player != null) showText(player, TranslatableText("update.message.checking", fileName))
 
                 // Check for updates
                 if (fileName.endsWith(".jar")) {
-                    ReleaseFile newestFile = null;
+                    var newestFile: ReleaseFile? = null
                     try {
                         // Check if Modrinth mod
-                        String sha1 = Hash.getSHA1(modFile);
-                        CurrentMod currentMod = new CurrentMod(sha1, "modrinth");
-
+                        val sha1 = Hash.getSHA1(modFile)
+                        var currentMod = CurrentMod(sha1, "modrinth")
                         if (currentMod.modName != null) {
                             // Get entire json list of release info
-                            JsonArray json = FabUtil.getJsonArray("https://api.modrinth.com/api/v1/mod/" + currentMod.projectID + "/version");
-                            newestFile = FabUtil.getNewUpdate(json, currentMod, "modrinth");
-                        }
-
-                        // Check if CurseForge mod
-                        else {
-                            String murmurHash = Hash.getMurmurHash(modFile);
-                            String postResult = FabUtil.sendPost(murmurHash);
-
+                            val json =
+                                FabUtil.getJsonArray("https://api.modrinth.com/api/v1/mod/" + currentMod.projectID + "/version")
+                            newestFile = FabUtil.getNewUpdate(json, currentMod, "modrinth")
+                        } else {
+                            val murmurHash = Hash.getMurmurHash(modFile)
+                            val postResult = FabUtil.sendPost(murmurHash)
                             if (postResult != null) {
                                 // Get project ID
-                                currentMod = new CurrentMod(postResult, "curseforge");
+                                currentMod = CurrentMod(postResult, "curseforge")
                                 if (currentMod.modName != null) {
                                     // Get entire json list of release info
-                                    JsonArray json = FabUtil.getJsonArray("https://addons-ecs.forgesvc.net/api/v2/addon/" + currentMod.projectID + "/files");
-                                    newestFile = FabUtil.getNewUpdate(json, currentMod, "curseforge");
+                                    val json =
+                                        FabUtil.getJsonArray("https://addons-ecs.forgesvc.net/api/v2/addon/" + currentMod.projectID + "/files")
+                                    newestFile = FabUtil.getNewUpdate(json, currentMod, "curseforge")
                                 }
                             }
                         }
-
                         if (currentMod.modName == null) {
-                            showText(player, new TranslatableText("update.message.error.notfound", fileName).setStyle(Style.EMPTY.withColor(Formatting.RED)));
-                        }
-                        // Send update message
-                        else if (newestFile != null) {
-                            if (command.equals("update")) {
-                                Text updateMessage = Text.Serializer.fromJson(" [\"\",{\"text\":\"" +
-                                        currentMod.modName + "  \",\"color\":\"gold\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
-                                        currentMod.websiteUrl + "\"}," + "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Website\",\"italic\":true}]}},{" + "\"text\":\"has an \"},{\"text\":\"update.\",\"color\":\"dark_green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
-                                        newestFile.downloadUrl + "\"}," + "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Direct Download\",\"italic\":true}]}}]");
-
-                                if (player != null) {
-                                    player.sendMessage(updateMessage, false);
-                                }
-                                else {
-                                    i++;
-                                }
-
-                            }
-                            else if (command.equals("autoupdate")) {
+                            showText(
+                                player, TranslatableText("update.message.error.notfound", fileName).setStyle(
+                                    Style.EMPTY.withColor(
+                                        Formatting.RED
+                                    )
+                                )
+                            )
+                        } else if (newestFile != null) {
+                            if (command == "update") {
+                                val updateMessage: Text? = Text.Serializer.fromJson(
+                                    " [\"\",{\"text\":\"" +
+                                            currentMod.modName + "  \",\"color\":\"gold\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
+                                            currentMod.websiteUrl + "\"}," + "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Website\",\"italic\":true}]}},{" + "\"text\":\"has an \"},{\"text\":\"update.\",\"color\":\"dark_green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
+                                            newestFile.downloadUrl + "\"}," + "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Direct Download\",\"italic\":true}]}}]"
+                                )
+                                player?.sendMessage(updateMessage, false) ?: i++
+                            } else if (command == "autoupdate") {
                                 try {
-                                    Files.delete(modFile);
-                                    String newFileName = newestFile.fileName;
-                                    int li = fileName.lastIndexOf(".jar");
-                                    if (li < fileName.length() - 4)
-                                        newFileName += fileName.substring(li + 4);
-                                    downloadFromURL(newestFile.downloadUrl, FabUtil.modsDir.resolve(newFileName));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Files.delete(modFile)
+                                    var newFileName:String? = newestFile.fileName
+                                    val li = fileName.lastIndexOf(".jar")
+                                    if (li < fileName.length - 4) newFileName += fileName.substring(li + 4)
+                                    newestFile.downloadUrl?.let { downloadFromURL(it, FabUtil.modsDir.resolve(newFileName)) }
+                                } catch (e: IOException) {
+                                    e.printStackTrace()
                                 }
-
-                                Text updateMessage = Text.Serializer.fromJson("[\"\",{\"text\":\"" +
-                                        currentMod.modName + ": \",\"color\":\"gold\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
-                                        currentMod.websiteUrl + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"Website\"]}},{\"text\":\"[" +
-                                        Array.get(currentMod.fileDate.split("T"), 0) + "] \",\"color\":\"white\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"" +
-                                        currentMod.fileName + "\"]}},\"--> \",{\"text\":\"[" +
-                                        Array.get(newestFile.fileDate.split("T"), 0) + "]\",\"color\":\"dark_green\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"" +
-                                        newestFile.fileName + "\"]}}]");
-
-                                if (player != null) {
-                                    player.sendMessage(updateMessage, false);
-                                }
-                                else {
-                                    i++;
-                                }
+                                val updateMessage: Text? = Text.Serializer.fromJson(
+                                    "[\"\",{\"text\":\"" +
+                                            currentMod.modName + ": \",\"color\":\"gold\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
+                                            currentMod.websiteUrl + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"Website\"]}},{\"text\":\"[" +
+                                            Array.get(
+                                                currentMod.fileDate?.split("T"),
+                                                0
+                                            ) + "] \",\"color\":\"white\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"" +
+                                            currentMod.fileName + "\"]}},\"--> \",{\"text\":\"[" +
+                                            Array.get(
+                                                newestFile.fileDate?.split("T"),
+                                                0
+                                            ) + "]\",\"color\":\"dark_green\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"" +
+                                            newestFile.fileName + "\"]}}]"
+                                )
+                                player?.sendMessage(updateMessage, false) ?: i++
                             }
                         }
-
-                    } catch (Exception ignored) {
+                    } catch (ignored: Exception) {
                     }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-
-        if (player != null)
-            showText(player, new TranslatableText("update.message.finish"));
-        else
-            showText(null, new TranslatableText("update.notification.fabrilousupdater.description", i));
-        isRunning = false;
+        if (player != null) showText(player, TranslatableText("update.message.finish")) else showText(
+            null,
+            TranslatableText("update.notification.fabrilousupdater.description", i)
+        )
+        isRunning = false
     }
 
-    private void downloadFromURL(String urlStr, Path target) throws IOException {
-        try (InputStream is = new URL(urlStr).openStream()) {
-            Files.copy(is, target);
-        }
+    @Throws(IOException::class)
+    private fun downloadFromURL(urlStr: String, target: Path) {
+        URL(urlStr).openStream().use { `is` -> Files.copy(`is`, target) }
+    }
+
+    companion object {
+        @JvmField
+        var isRunning = false
+        var i = 0
     }
 }

@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ModsScreen.class)
-public abstract class ModMenuButton extends Screen {
+public abstract class ModsCheckMixin extends Screen {
     private static final Identifier UPDATE_BUTTON_LOCATION = new Identifier("fabrilousupdatergui", "textures/gui/install_button.png");
-    @Shadow
+//    @Shadow
     private int paneWidth;
-    @Shadow
+//    @Shadow
     private int paneY;
 
-    protected ModMenuButton(Text title) {
+    protected ModsCheckMixin(Text title) {
         super(title);
     }
 

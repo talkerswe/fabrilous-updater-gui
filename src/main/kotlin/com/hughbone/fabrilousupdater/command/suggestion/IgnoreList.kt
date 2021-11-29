@@ -1,27 +1,25 @@
-package com.hughbone.fabrilousupdater.command.suggestion;
+package com.hughbone.fabrilousupdater.command.suggestion
 
-import com.hughbone.fabrilousupdater.util.FabUtil;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import com.hughbone.fabrilousupdater.util.FabUtil
+import com.hughbone.fabrilousupdater.util.FabUtil.createConfigFiles
+import com.mojang.brigadier.suggestion.Suggestions
+import com.mojang.brigadier.suggestion.SuggestionsBuilder
+import java.io.IOException
+import java.nio.file.Files
+import java.util.concurrent.CompletableFuture
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.concurrent.CompletableFuture;
-
-public class IgnoreList {
-    public static CompletableFuture<Suggestions> getSuggestions(Object o, SuggestionsBuilder builder) {
-        FabUtil.createConfigFiles();
+object IgnoreList {
+    fun getSuggestions(builder: SuggestionsBuilder): CompletableFuture<Suggestions> {
+        createConfigFiles()
         try {
-            String line;
-            BufferedReader file = Files.newBufferedReader(FabUtil.updaterIgnorePath);
-            while ((line = file.readLine()) != null) {
-                builder.suggest(line);
+            var line: String?
+            val file = Files.newBufferedReader(FabUtil.updaterIgnorePath)
+            while (file.readLine().also { line = it } != null) {
+                builder.suggest(line)
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-
-        return builder.buildFuture();
+        return builder.buildFuture()
     }
 }

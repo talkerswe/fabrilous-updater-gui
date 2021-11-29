@@ -1,124 +1,107 @@
-package com.hughbone.fabrilousupdater.util;
+package com.hughbone.fabrilousupdater.util
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import kotlin.Throws
+import java.io.IOException
+import java.security.MessageDigest
+import java.lang.StringBuilder
+import java.util.Locale
+import java.security.NoSuchAlgorithmException
+import java.lang.RuntimeException
+import java.nio.file.Files
+import java.nio.file.Path
+import kotlin.experimental.and
 
-
-public class Hash {
-    public static String getMurmurHash(Path file) throws IOException {
-        final int m = 0x5bd1e995;
-        final int r = 24;
-        long k = 0x0L;
-        int seed = 1;
-        int shift = 0x0;
+object Hash {
+    @Throws(IOException::class)
+    fun getMurmurHash(file: Path): String {
+        val m = 0x5bd1e995
+        val r = 24
+        var k = 0x0L
+        val seed = 1
+        var shift = 0x0
 
         // get file size
-        long flength = Files.size(file);
+        val flength = Files.size(file)
 
         // convert file to byte array
-        byte[] byteFile = Files.readAllBytes(file);
-
-        long length = 0;
-        char b;
+        val byteFile = Files.readAllBytes(file)
+        var length: Long = 0
+        var b: Char
         // get good bytes from file
-        for(int i = 0; i < flength; i++) {
-            b = (char) byteFile[i];
-
-            if (b == 0x9 || b == 0xa || b == 0xd || b == 0x20) {
-                continue;
+        for (i in 0 until flength) {
+            b = byteFile[i.toInt()].toInt().toChar()
+            if (b.code == 0x9 || b.code == 0xa || b.code == 0xd || b.code == 0x20) {
+                continue
             }
-
-            length += 1;
+            length += 1
         }
-        long h = (seed ^ length);
-
-        for(int i = 0; i < flength; i++) {
-            b = (char) byteFile[i];
-
-            if (b == 0x9 || b == 0xa || b == 0xd || b == 0x20) {
-                continue;
+        var h = (seed xor length.toInt()).toLong()
+        for (i in 0 until flength) {
+            b = byteFile[i.toInt()].toInt().toChar()
+            if (b.code == 0x9 || b.code == 0xa || b.code == 0xd || b.code == 0x20) {
+                continue
             }
-
-            if (b > 255) {
-                while (b > 255) {
-                    b -= 255;
+            if (b.code > 255) {
+                while (b.code > 255) {
+                    b -= 255
                 }
             }
-
-            k = k | ((long) b << shift);
-
-            shift = shift + 0x8;
-
+            k = k or (b.code.toLong() shl shift)
+            shift += 0x8
             if (shift == 0x20) {
-                h = 0x00000000FFFFFFFFL & h;
-
-                k = k * m;
-                k = 0x00000000FFFFFFFFL & k;
-
-                k = k ^ (k >> r);
-                k = 0x00000000FFFFFFFFL & k;
-
-                k = k * m;
-                k = 0x00000000FFFFFFFFL & k;
-
-                h = h * m;
-                h = 0x00000000FFFFFFFFL & h;
-
-                h = h ^ k;
-                h = 0x00000000FFFFFFFFL & h;
-
-                k = 0x0;
-                shift = 0x0;
+                h = 0x00000000FFFFFFFFL and h
+                k *= m
+                k = 0x00000000FFFFFFFFL and k
+                k = k xor (k shr r)
+                k = 0x00000000FFFFFFFFL and k
+                k *= m
+                k = 0x00000000FFFFFFFFL and k
+                h *= m
+                h = 0x00000000FFFFFFFFL and h
+                h = h xor k
+                h = 0x00000000FFFFFFFFL and h
+                k = 0x0
+                shift = 0x0
             }
         }
-
         if (shift > 0) {
-            h = h ^ k;
-            h = 0x00000000FFFFFFFFL & h;
-
-            h = h * m;
-            h = 0x00000000FFFFFFFFL & h;
+            h = h xor k
+            h = 0x00000000FFFFFFFFL and h
+            h *= m
+            h = 0x00000000FFFFFFFFL and h
         }
-
-        h = h ^ (h >> 13);
-        h = 0x00000000FFFFFFFFL & h;
-
-        h = h * m;
-        h = 0x00000000FFFFFFFFL & h;
-
-        h = h ^ (h >> 15);
-        h = 0x00000000FFFFFFFFL & h;
-
-        return String.valueOf(h);
+        h = h xor (h shr 13)
+        h = 0x00000000FFFFFFFFL and h
+        h *= m
+        h = 0x00000000FFFFFFFFL and h
+        h = h xor (h shr 15)
+        h = 0x00000000FFFFFFFFL and h
+        return h.toString()
     }
 
-
-    public static String getSHA1(Path file) {
+    fun getSHA1(file: Path): String {
         // ex. --> String shString = getSHA1(Path.of("config/renammd.jar"));
+        try {
+            Files.newInputStream(file).use { `is` ->
+                val md = MessageDigest.getInstance("SHA1")
+                val dataBytes = ByteArray(1024)
+                var nread: Int
+                while (`is`.read(dataBytes).also { nread = it } != -1) {
+                    md.update(dataBytes, 0, nread)
+                }
+                val mdbytes = md.digest()
 
-        try (InputStream is = Files.newInputStream(file)) {
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-            byte[] dataBytes = new byte[1024];
-
-            int nread;
-            while ((nread = is.read(dataBytes)) != -1) {
-                md.update(dataBytes, 0, nread);
+                //convert the byte to hex format
+                val sb = StringBuilder()
+                for (mdbyte in mdbytes) {
+                    sb.append(((mdbyte and 0xff.toByte()) + 0x100).toString(16).substring(1))
+                }
+                return sb.toString().lowercase(Locale.getDefault())
             }
-
-            byte[] mdbytes = md.digest();
-
-            //convert the byte to hex format
-            StringBuilder sb = new StringBuilder();
-            for (byte mdbyte : mdbytes) {
-                sb.append(Integer.toString((mdbyte & 0xff) + 0x100, 16).substring(1));
-            }
-            return sb.toString().toLowerCase();
-        } catch (NoSuchAlgorithmException | IOException ex) {
-            throw new RuntimeException(ex);
+        } catch (ex: NoSuchAlgorithmException) {
+            throw RuntimeException(ex)
+        } catch (ex: IOException) {
+            throw RuntimeException(ex)
         }
     }
 }

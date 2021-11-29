@@ -12,9 +12,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TitleScreen.class)
-public class OnStartCheckMixin extends Screen {
+public class TitleCheckMixin extends Screen {
 
-    protected OnStartCheckMixin(Text title) {
+    protected TitleCheckMixin(Text title) {
         super(title);
     }
 

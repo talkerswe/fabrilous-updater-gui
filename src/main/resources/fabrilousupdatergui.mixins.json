@@ -6,8 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "ModMenuButton",
-    "OnStartCheckMixin"
+    "ModsCheckMixin",
+    "TitleCheckMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,55 +1,68 @@
-package com.hughbone.fabrilousupdater.platform;
+package com.hughbone.fabrilousupdater.platform
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 
-public class ReleaseFile {
-    private String platform;
-    private JsonObject json;
-
-    public String fileName;
-    public String fileDate;
-    public String downloadUrl;
-    public boolean isFabric = false;
-
-    public ReleaseFile(JsonObject json, String platform) {
-        if (platform.equals("curseforge")) {
-            this.platform = "CF";
-            final JsonArray modulesArray = json.getAsJsonArray("modules");
-            for (JsonElement j : modulesArray) {
-                if (j.getAsJsonObject().get("foldername").getAsString().equals("fabric.mod.json")) {
-                    isFabric = true;
-                    break;
+class ReleaseFile(json: JsonObject, platform: String) {
+    private var platform: String? = null
+    private var json: JsonObject? = null
+    var fileName: String? = null
+    @JvmField
+    var fileDate: String? = null
+    var downloadUrl: String? = null
+    @JvmField
+    var isFabric = false
+    fun isCompatible(mcVer: String?): Boolean {
+        var jsonVerArray: JsonArray? = null
+        if (platform == "CF") {
+            jsonVerArray = json!!.getAsJsonArray("gameVersion")
+        } else if (platform == "MR") {
+            jsonVerArray = json!!.getAsJsonArray("game_versions")
+        }
+        if (jsonVerArray != null) {
+            for (j in jsonVerArray) {
+                val ver = j.asString
+                if (ver.contains(mcVer!!)) {
+                    return true
                 }
-            }
-
-            if (isFabric) {
-                this.fileDate = json.get("fileDate").getAsString();
-                this.fileName = json.get("fileName").getAsString();
-                this.downloadUrl = json.get("downloadUrl").getAsString();
             }
         }
+        return false
+    }
 
-        else if (platform.equals("modrinth")) {
-            this.platform = "MR";
-            final JsonArray loadersArray = json.getAsJsonArray("loaders");
-            for (JsonElement j : loadersArray) {
-                if (j.getAsJsonPrimitive().getAsString().contains("fabric")) {
-                    isFabric = true;
-                    break;
+    init {
+        if (platform == "curseforge") {
+            this.platform = "CF"
+            val modulesArray = json.getAsJsonArray("modules")
+            for (j in modulesArray) {
+                if (j.asJsonObject["foldername"].asString == "fabric.mod.json") {
+                    isFabric = true
+                    break
                 }
             }
             if (isFabric) {
-                this.fileDate = json.get("date_published").getAsString();
-
-                final JsonArray filesArray =  json.getAsJsonArray("files");
-                for (JsonElement j : filesArray) {
-                    String tempFile = j.getAsJsonObject().get("filename").getAsString();
+                fileDate = json["fileDate"].asString
+                fileName = json["fileName"].asString
+                downloadUrl = json["downloadUrl"].asString
+            }
+        } else if (platform == "modrinth") {
+            this.platform = "MR"
+            val loadersArray = json.getAsJsonArray("loaders")
+            for (j in loadersArray) {
+                if (j.asJsonPrimitive.asString.contains("fabric")) {
+                    isFabric = true
+                    break
+                }
+            }
+            if (isFabric) {
+                fileDate = json["date_published"].asString
+                val filesArray = json.getAsJsonArray("files")
+                for (j in filesArray) {
+                    val tempFile = j.asJsonObject["filename"].asString
                     if (!tempFile.contains("-sources") && !tempFile.contains("-dev")) {  // If multiple files uploaded, get rid of imposter ඞ ones
-                        this.fileName = j.getAsJsonObject().get("filename").getAsString();
-                        this.downloadUrl = j.getAsJsonObject().get("url").getAsString();
-                        break;
+                        fileName = j.asJsonObject["filename"].asString
+                        downloadUrl = j.asJsonObject["url"].asString
+                        break
                     }
                 }
             }
@@ -57,29 +70,7 @@ public class ReleaseFile {
 
         // Save json object
         if (isFabric) {
-            this.json = json;
+            this.json = json
         }
-    }
-
-    public boolean isCompatible(String mcVer) {
-        JsonArray jsonVerArray = null;
-
-        if (platform.equals("CF")) {
-            jsonVerArray = json.getAsJsonArray("gameVersion");
-        }
-        else if (platform.equals("MR")) {
-            jsonVerArray = json.getAsJsonArray("game_versions");
-        }
-
-        if (jsonVerArray != null) {
-            for (JsonElement j : jsonVerArray) {
-                String ver = j.getAsString();
-                if (ver.contains(mcVer)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }

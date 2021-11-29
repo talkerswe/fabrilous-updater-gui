@@ -2,6 +2,7 @@ plugins {
 	id 'fabric-loom' version '0.10-SNAPSHOT'
     id 'org.jetbrains.kotlin.jvm' version '1.6.0'
 	id "org.jetbrains.kotlin.plugin.serialization" version "1.6.0"
+	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.8.0"
 }
 
 sourceCompatibility = JavaVersion.VERSION_16
@@ -45,8 +46,6 @@ dependencies {
 	}
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	testImplementation "org.jetbrains.kotlin:kotlin-test:1.6.0"
-
-
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.

@@ -1,42 +1,37 @@
-package com.hughbone.fabrilousupdater.command.suggestion;
+package com.hughbone.fabrilousupdater.command.suggestion
 
-import com.hughbone.fabrilousupdater.util.FabUtil;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import com.hughbone.fabrilousupdater.util.FabUtil
+import com.hughbone.fabrilousupdater.util.FabUtil.createConfigFiles
+import com.mojang.brigadier.suggestion.Suggestions
+import com.mojang.brigadier.suggestion.SuggestionsBuilder
+import java.io.IOException
+import java.nio.file.Files
+import java.util.concurrent.CompletableFuture
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.concurrent.CompletableFuture;
-
-public class ModList {
-    public static CompletableFuture<Suggestions> getSuggestions(Object o, SuggestionsBuilder builder) {
-        FabUtil.createConfigFiles();
+object ModList {
+    fun getSuggestions(builder: SuggestionsBuilder): CompletableFuture<Suggestions> {
+        createConfigFiles()
         // Search through all mods
         try {
-            outer:
-            for (Path modFile : Files.list(FabUtil.modsDir).toList()) {
-                String modFileName = modFile.getFileName().toString();
-
+            outer@ for (modFile in Files.list(FabUtil.modsDir).toList()) {
+                val modFileName = modFile.fileName.toString()
                 if (modFileName.contains(".jar")) {
                     try {
-                        String line;
-                        BufferedReader file = Files.newBufferedReader(FabUtil.updaterIgnorePath);
-                        while ((line = file.readLine()) != null) {
-                            if (line.equals(modFileName)) {
-                                continue outer;
+                        var line: String
+                        val file = Files.newBufferedReader(FabUtil.updaterIgnorePath)
+                        while (file.readLine().also { line = it } != null) {
+                            if (line == modFileName) {
+                                continue@outer
                             }
                         }
-                    } catch (IOException ignored) {}
-
-                    builder.suggest(modFileName);
+                    } catch (ignored: IOException) {
+                    }
+                    builder.suggest(modFileName)
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-
-        return builder.buildFuture();
+        return builder.buildFuture()
     }
 }
