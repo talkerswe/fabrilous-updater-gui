@@ -6,7 +6,7 @@
 ![Release](https://img.shields.io/github/release/RELOADEDev/fabrilous-updater-gui.svg)
 ![Downloads](https://img.shields.io/github/downloads/RELOADEDev/fabrilous-updater-gui/total.svg)
 
-Minecraft client-side mod used to check for updates to your Fabric mods.
+Minecraft client-side (server side will be soon) mod used to check for updates to your Fabric mods.
 
 Note: Only works with mods uploaded to CurseForge or Modrinth.
 
