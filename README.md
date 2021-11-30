@@ -10,11 +10,15 @@ Minecraft client-side (server side will be soon) mod used to check for updates t
 
 Note: Only works with mods uploaded to CurseForge or Modrinth.
 
+## Contributors
+<a href="https://github.com/reloadedev/fabrilous-updater-gui/graphs/contributors">
+  <img height="40em" src="https://contrib.rocks/image?repo=reloadedev/fabrilous-updater-gui" />
+</a>
 
 ## Commands
 * "/fabdate update" - Shows a list of mods needing updates with a clickable download link.
 * "/fabdate ignore"  -  Add, list, or remove mods from an ignore list to prevent update checks.
-* "/fabdate autoupdate" - Automatically removes old mods and downloads new mods. (Deprecated)
+* "/fabdate autoupdate" - Automatically removes old mods and downloads new mods. (deprecated)
 
 
 ## How it works:
