@@ -42,9 +42,7 @@ class AutoUpdateCommand {
                                     ), false
                                 )
                             }
-                            val warningMessage: Text? =
-                                Text.Serializer.fromJson("[\"\",{\"text\":\"[Warning] \",\"color\":\"red\"},\"This command automatically deletes old mods and downloads new versions. \",{\"text\":\"Click here to continue.\",\"color\":\"dark_green\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/ඞmogusClient\"}}]")
-                            player.sendMessage(warningMessage, false)
+                            player.sendMessage(getWarningMessage("Client"), false)
                             1
                         })
         )
@@ -56,14 +54,19 @@ class AutoUpdateCommand {
         )
     }
 
+    private fun getWarningMessage(env: String): Text? {
+        return Text.Serializer.fromJson(
+            "[\"\",{\"text\":\"[Warning] \",\"color\":\"red\"},\"This command automatically downloads new versions and moves old mods into the 'Outdated_Mods' folder. \",{\"text\":\"Click here to continue.\",\"color\":\"dark_green\",\"clickEvent\":{" +
+                    "\"action\":\"run_command\",\"value\":\"/ඞmogus" + env + "\"}}]"
+        )
+    }
+
     private fun registerServer() {
         CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource?>, _: Boolean ->
             dispatcher.register(CommandManager.literal("fabdateserver")
                 .requires { source: ServerCommandSource -> source.hasPermissionLevel(4) }
                 .then(CommandManager.literal("autoupdate").executes { ctx: CommandContext<ServerCommandSource> ->
-                    val warningMessage: Text? =
-                        Text.Serializer.fromJson("[\"\",{\"text\":\"[Warning] \",\"color\":\"red\"},\"This command automatically deletes old mods and downloads new versions. \",{\"text\":\"Click here to continue.\",\"color\":\"dark_green\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/ඞmogusServer\"}}]")
-                    ctx.source.player.sendMessage(warningMessage, false)
+                    ctx.source.player.sendMessage(getWarningMessage("Server"), false)
                     1
                 })
             )

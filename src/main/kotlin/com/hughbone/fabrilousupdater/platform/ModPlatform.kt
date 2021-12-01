@@ -14,6 +14,7 @@ import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Path
 
+
 // TODO: IDK, but message sent twice, updates not finds => no startup notification
 class ModPlatform {
     private fun showText(player: PlayerEntity?, text: Text) {
@@ -100,28 +101,28 @@ class ModPlatform {
                             } else if (command == "autoupdate") {
                                 try {
                                     Files.delete(modFile)
-                                    var newFileName:String? = newestFile.fileName
+                                    var newFileName = newestFile.fileName
                                     val li = fileName.lastIndexOf(".jar")
                                     if (li < fileName.length - 4) newFileName += fileName.substring(li + 4)
-                                    newestFile.downloadUrl?.let { downloadFromURL(it, FabUtil.modsDir.resolve(newFileName)) }
-                                } catch (e: IOException) {
+                                    downloadFromURL(newestFile.downloadUrl!!, FabUtil.modsDir.resolve(newFileName))
+                                } catch (e: Exception) {
                                     e.printStackTrace()
                                 }
-                                val updateMessage: Text? = Text.Serializer.fromJson(
+                                val updateMessage: Text = Text.Serializer.fromJson(
                                     "[\"\",{\"text\":\"" +
                                             currentMod.modName + ": \",\"color\":\"gold\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
                                             currentMod.websiteUrl + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"Website\"]}},{\"text\":\"[" +
                                             Array.get(
-                                                currentMod.fileDate?.split("T"),
+                                                currentMod.fileDate!!.split("T"),
                                                 0
                                             ) + "] \",\"color\":\"white\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"" +
                                             currentMod.fileName + "\"]}},\"--> \",{\"text\":\"[" +
                                             Array.get(
-                                                newestFile.fileDate?.split("T"),
+                                                newestFile.fileDate!!.split("T"),
                                                 0
                                             ) + "]\",\"color\":\"dark_green\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"" +
                                             newestFile.fileName + "\"]}}]"
-                                )
+                                )!!
                                 player?.sendMessage(updateMessage, false) ?: i++
                             }
                         }

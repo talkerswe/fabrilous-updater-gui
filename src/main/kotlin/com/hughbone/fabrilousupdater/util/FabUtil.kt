@@ -9,6 +9,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.MinecraftVersion
 import org.apache.commons.lang3.ArrayUtils
 import java.io.BufferedReader
+import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -88,16 +89,14 @@ object FabUtil {
 
     fun getJsonArray(sURL: String): JsonArray {
         val jsonStr = getJsonString(sURL)
-        val jp = JsonParser()
         assert(jsonStr != null)
-        return jp.parse(jsonStr).asJsonArray
+        return JsonParser.parseString(jsonStr).asJsonArray
     }
 
     fun getJsonObject(sURL: String): JsonObject {
         val jsonStr = getJsonString(sURL)
-        val jp = JsonParser()
         assert(jsonStr != null)
-        return jp.parse(jsonStr).asJsonObject
+        return JsonParser.parseString(jsonStr).asJsonObject
     }
 
     // remove last decimal in MC version (ex. 1.16.5 --> 1.16)
@@ -120,6 +119,7 @@ object FabUtil {
         try {
             if (!Files.exists(updaterIgnorePath)) Files.createFile(updaterIgnorePath)
         } catch (ignored: IOException) {
+            File(System.getProperty("user.dir") + File.separator + "mods" + File.separator + "Outdated_Mods").mkdirs()
         }
     }
 }
