@@ -17,6 +17,8 @@ import java.nio.file.Path
 
 // TODO: IDK, but message sent twice, updates not finds => no startup notification
 class ModPlatform {
+    var i = 0
+
     private fun showText(player: PlayerEntity?, text: Text) {
         if (player != null) {
             player.sendMessage(text, false)
@@ -75,8 +77,7 @@ class ModPlatform {
                                 currentMod = CurrentMod(postResult, "curseforge")
                                 if (currentMod.modName != null) {
                                     // Get entire json list of release info
-                                    val json =
-                                        FabUtil.getJsonArray("https://addons-ecs.forgesvc.net/api/v2/addon/" + currentMod.projectID + "/files")
+                                    val json = FabUtil.getJsonArray("https://addons-ecs.forgesvc.net/api/v2/addon/" + currentMod.projectID + "/files")
                                     newestFile = FabUtil.getNewUpdate(json, currentMod, "curseforge")
                                 }
                             }
@@ -97,12 +98,13 @@ class ModPlatform {
                                             currentMod.websiteUrl + "\"}," + "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Website\",\"italic\":true}]}},{" + "\"text\":\"has an \"},{\"text\":\"update.\",\"color\":\"dark_green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
                                             newestFile.downloadUrl + "\"}," + "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Direct Download\",\"italic\":true}]}}]"
                                 )
-                                player?.sendMessage(updateMessage, false) ?: i++
+                                if (player != null) player.sendMessage(updateMessage, false)
+                                else i++
                             } else if (command == "autoupdate") {
                                 try {
                                     Files.delete(modFile)
-                                    var newFileName = newestFile.fileName
-                                    val li = fileName.lastIndexOf(".jar")
+                                    var newFileName: String? = newestFile.fileName
+                                    val li:Int = fileName.lastIndexOf(".jar")
                                     if (li < fileName.length - 4) newFileName += fileName.substring(li + 4)
                                     downloadFromURL(newestFile.downloadUrl!!, FabUtil.modsDir.resolve(newFileName))
                                 } catch (e: Exception) {
@@ -123,7 +125,8 @@ class ModPlatform {
                                             ) + "]\",\"color\":\"dark_green\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[\"" +
                                             newestFile.fileName + "\"]}}]"
                                 )!!
-                                player?.sendMessage(updateMessage, false) ?: i++
+                                if (player != null) player.sendMessage(updateMessage, false)
+                                else i++
                             }
                         }
                     } catch (ignored: Exception) {
@@ -133,21 +136,21 @@ class ModPlatform {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        if (player != null) showText(player, TranslatableText("update.message.finish")) else showText(
-            null,
-            TranslatableText("update.notification.fabrilousupdater.description", i)
+        if (player != null) showText(player, TranslatableText("update.message.finish"))
+        else showText(null, TranslatableText("update.notification.fabrilousupdater.description", i)
         )
         isRunning = false
     }
 
     @Throws(IOException::class)
     private fun downloadFromURL(urlStr: String, target: Path) {
-        URL(urlStr).openStream().use { `is` -> Files.copy(`is`, target) }
+        try {
+            URL(urlStr).openStream().use { `is` -> Files.copy(`is`, target) }
+        } catch (ignored: Exception) {}
     }
 
     companion object {
         @JvmField
         var isRunning = false
-        var i = 0
     }
 }

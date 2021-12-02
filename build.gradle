@@ -2,7 +2,8 @@ plugins {
 	id 'fabric-loom' version '0.10-SNAPSHOT'
     id 'org.jetbrains.kotlin.jvm' version '1.6.0'
 	id "org.jetbrains.kotlin.plugin.serialization" version "1.6.0"
-	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.8.0"
+	id "org.jetbrains.kotlinx.binary-compatibility-validator" version "0.8.0"
+	id "com.modrinth.minotaur" version "1.2.1"
 }
 apply plugin: 'java'
 
@@ -74,6 +75,7 @@ test {
 }
 
 tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
 	it.options.release = 17
 }
 
@@ -94,4 +96,25 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
+}
+
+import com.modrinth.minotaur.TaskModrinthUpload
+import com.modrinth.minotaur.request.VersionType
+import com.modrinth.minotaur.request.Dependency
+
+task publishModrinth(type: TaskModrinthUpload) {
+	onlyIf {
+		System.getenv("MODRINTH")
+	}
+
+	token = System.getenv("MODRINTH")
+	projectId = "TZF87gp0"
+	versionNumber = version
+	uploadFile = remapJar
+	versionType = VersionType.ALPHA
+	addGameVersion(project.minecraft_version)
+	addLoader("fabric")
+	addDependency("Ha28R6CL", Dependency.DependencyType.REQUIRED)
+	addDependency("mOgUt4GM", Dependency.DependencyType.REQUIRED)
+	changelog = file("CHANGELOG.md").getText("UTF-8")
 }

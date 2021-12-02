@@ -15,8 +15,7 @@ class CurrentMod(hashOrResult: String, platform: String) {
     init {
         try {
             if (platform == "curseforge") {
-                val jp = JsonParser()
-                var json = jp.parse(hashOrResult).asJsonObject
+                var json = JsonParser.parseString(hashOrResult).asJsonObject
                 projectID = json["exactMatches"].asJsonArray[0].asJsonObject["id"].asString
                 fileDate = json["exactMatches"].asJsonArray[0].asJsonObject["file"].asJsonObject["fileDate"].asString
                 fileName = json["exactMatches"].asJsonArray[0].asJsonObject["file"].asJsonObject["fileName"].asString
@@ -32,7 +31,7 @@ class CurrentMod(hashOrResult: String, platform: String) {
 
                 // Get filename
                 for (j in filesArray) {
-                    val tempFile = j.asJsonObject["filename"].asString
+                    val tempFile:String = j.asJsonObject["filename"].asString
                     if (!tempFile.contains("-sources") && !tempFile.contains("-dev")) {  // If multiple files uploaded, get rid of imposter ඞ ones
                         fileName = j.asJsonObject["filename"].asString
                         break
@@ -46,7 +45,7 @@ class CurrentMod(hashOrResult: String, platform: String) {
             modName = modName!!.replace("(fabric)", "")
             modName = modName!!.replace("(Fabric)", "")
             // Remove spaces at the end of the string
-            while (modName!![modName!!.length - 1].toString() == " ") {
+            while (Character.toString(modName!!.length-1) == " ") {
                 modName = modName!!.substring(0, modName!!.length - 1)
             }
         } catch (e: Exception) {

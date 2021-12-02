@@ -6,10 +6,10 @@ import com.google.gson.JsonObject
 class ReleaseFile(json: JsonObject, platform: String) {
     private var platform: String? = null
     private var json: JsonObject? = null
-    var fileName: String? = null
+    var fileName:String? = null
     @JvmField
-    var fileDate: String? = null
-    var downloadUrl: String? = null
+    var fileDate:String? = null
+    var downloadUrl:String? = null
     @JvmField
     var isFabric = false
     fun isCompatible(mcVer: String?): Boolean {
