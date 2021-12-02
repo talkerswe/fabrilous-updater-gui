@@ -15,7 +15,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 
-// TODO: IDK, but message sent twice, updates not finds => no startup notification, some other errors
+// BUG: Message sent twice, updates not finds => no startup notification, some other errors
 class ModPlatform {
     var i = 0
 
