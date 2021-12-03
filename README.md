@@ -1,6 +1,5 @@
 # Fabrilous Updater GUI
-[![CircleCI](https://circleci.com/gh/RELOADEDev/fabrilous-updater-gui/tree/main.svg?style=shield)](https://circleci.com/gh/RELOADEDev/fabrilous-updater-gui/tree/main)
-[![build](https://github.com/RELOADEDev/fabrilous-updater-gui/actions/workflows/build.yml/badge.svg)](https://github.com/RELOADEDev/fabrilous-updater-gui/actions)
+[![Build](https://github.com/RELOADEDev/fabrilous-updater-gui/actions/workflows/build.yml/badge.svg)](https://github.com/RELOADEDev/fabrilous-updater-gui/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/RELOADEDev/fabrilous-updater-gui.svg)](https://github.com/RELOADEDev/fabrilous-updater-gui/blob/main/LICENSE)
 [![Release](https://img.shields.io/github/release/RELOADEDev/fabrilous-updater-gui.svg)](https://github.com/RELOADEDev/fabrilous-updater-gui/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/RELOADEDev/fabrilous-updater-gui/total.svg)](https://github.com/RELOADEDev/fabrilous-updater-gui/releases/latest)
@@ -8,6 +7,8 @@
 Minecraft client-side (server side will be soon) mod used to check for updates to your Fabric mods.
 
 Note: Only works with mods uploaded to CurseForge or Modrinth.
+
+**Mod Menu, Fabric Language Kotlin and Cloth Config API should be installed!**
 
 Nightly builds download link [here](https://nightly.link/RELOADEDev/fabrilous-updater-gui/workflows/build/main/Package.zip)
 

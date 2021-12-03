@@ -23,8 +23,7 @@ class CurrentMod(hashOrResult: String, platform: String) {
                 modName = json["name"].asString
                 websiteUrl = json["websiteUrl"].asString + "/files"
             } else if (platform == "modrinth") {
-                var json =
-                    FabUtil.getJsonObject("https://api.modrinth.com/api/v1/version_file/$hashOrResult?algorithm=sha1")
+                var json = FabUtil.getJsonObject("https://api.modrinth.com/api/v1/version_file/$hashOrResult?algorithm=sha1")
                 projectID = json["mod_id"].asString
                 fileDate = json["date_published"].asString
                 val filesArray = json.getAsJsonArray("files")
