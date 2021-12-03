@@ -70,7 +70,6 @@ class ModUpdaterCommand {
             } else {
                 player.sendMessage(TranslatableText("update.message.search"), false)
                 ModPlatform().start(player, "update")
-                player.sendMessage(TranslatableText("update.message.finish"), false)
             }
         }
     }

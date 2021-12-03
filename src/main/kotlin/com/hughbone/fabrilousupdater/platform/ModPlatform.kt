@@ -15,7 +15,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 
-// BUG: Message sent twice, updates not finds => no startup notification, some other errors
+// FIXME Message sent twice, updates not finds => no startup notification, some other errors
 class ModPlatform {
     var i = 0
 
@@ -92,12 +92,12 @@ class ModPlatform {
                             )
                         } else if (newestFile != null) {
                             if (command == "update") {
-                                val updateMessage: Text? = Text.Serializer.fromJson(
+                                val updateMessage: Text = Text.Serializer.fromJson(
                                     " [\"\",{\"text\":\"" +
                                             currentMod.modName + "  \",\"color\":\"gold\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
                                             currentMod.websiteUrl + "\"}," + "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Website\",\"italic\":true}]}},{" + "\"text\":\"has an \"},{\"text\":\"update.\",\"color\":\"dark_green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" +
                                             newestFile.downloadUrl + "\"}," + "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":[{\"text\":\"Direct Download\",\"italic\":true}]}}]"
-                                )
+                                )!!
                                 if (player != null) player.sendMessage(updateMessage, false)
                                 else i++
                             } else if (command == "autoupdate") {
